@@ -1,0 +1,17 @@
+{
+    "name": "pewe/laravel-rajaongkir",
+    "description": "A wrapper for Raja Ongkir API",
+    "type": "library",
+    "require": {
+        "php": "^5.3.0",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Permadi Wibisono",
+            "email": "mbapewe@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
