@@ -13,7 +13,18 @@ trait RajaOngkirTrait{
 		return $this->key;
 	}
 	private function getBaseUri(){
-		$this->base_uri='https://api.rajaongkir.com/starter/';
+		switch (config('rajaongkir.type','starter')) {
+			case 'basic':
+				$this->base_uri='https://api.rajaongkir.com/basic/';
+				break;
+			case 'pro':
+				$this->base_uri='https://api.rajaongkir.com/api/';
+				break;
+			
+			default:
+				$this->base_uri='https://api.rajaongkir.com/starter/';
+				break;
+		}
 		return $this->base_uri;
 	}
 	public function getClient()
