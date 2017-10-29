@@ -89,10 +89,10 @@ class Cost
 			throw $e;
 		}
 	}
-	public function couriers($destination,$couriers,$weight=1000,$origin=null)
+	public function couriers($destination,$weight=1000,$origin=null)
 	{
 		try {
-			$cList=explode(',', $couriers);
+			$cList=config('rajaongkir.available_couriers',['jne']);
 			$origin=is_null($origin)?config('rajaongkir.origin'):$origin;
 			$client=$this->getClient();
 			$promises=array();
