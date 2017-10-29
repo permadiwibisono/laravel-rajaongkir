@@ -15,7 +15,7 @@ class RajaOngkirServiceProvider extends ServiceProvider
 	{
 	    $this->publishes([
 	        __DIR__.'/../config/rajaongkir.php' => config_path('rajaongkir.php'),
-	    ]);
+	    ],'laravel-rajaongkir-config');
 	}
     /**
      * Register any application services.
