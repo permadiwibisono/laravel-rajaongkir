@@ -1,18 +1,17 @@
 <?php
 namespace Pewe\RajaOngkir;
+use GuzzleHttp\Exception\RequestException;
+use Pewe\RajaOngkir\Traits\RajaOngkirTrait;
 use \GuzzleHttp\Client as Client;
 /**
 * 
 */
 class Province
 {
+	use RajaOngkirTrait;
 	public function all(){
 		try {
-			$headers=['key'=> config('rajaongkir.api_key')];
-			$client=new Client([
-				'base_uri'=>'https://api.rajaongkir.com/starter/',
-				'headers'=>$headers
-			]);
+			$client=$this->getClient();
 			$response=$client->get('province');
 			if($response->getStatusCode()==200)
 			{
@@ -20,17 +19,16 @@ class Province
 				return collect($results->rajaongkir->results);
 			}
 			return collect();
-		} catch (Exception $e) {
-			
+		} catch (RequestException $e) {
+		    $this->getErrors($e);
+		}
+		catch (Exception $e) {
+			throw $e;
 		}
 	}
 	public function find($id){
 		try {
-			$headers=['key'=> config('rajaongkir.api_key')];
-			$client=new Client([
-				'base_uri'=>'https://api.rajaongkir.com/starter/',
-				'headers'=>$headers
-			]);
+			$client=$this->getClient();
 			$response=$client->get('province',['query'=>['id'=>$id]]);
 			if($response->getStatusCode()==200)
 			{
@@ -38,8 +36,11 @@ class Province
 				return collect($results->rajaongkir->results);
 			}
 			return collect();
-		} catch (Exception $e) {
-			
+		} catch (RequestException $e) {
+		    $this->getErrors($e);
+		}
+		catch (Exception $e) {
+			throw $e;
 		}
 	}
 }

@@ -1,22 +1,19 @@
 <?php
 namespace Pewe\RajaOngkir;
-use \GuzzleHttp\Client as Client;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise;
+use Pewe\RajaOngkir\Traits\RajaOngkirTrait;
+use \GuzzleHttp\Client as Client;
 /**
 * 
 */
 class Cost
 {
+	use RajaOngkirTrait;
 	public function calculate($destination,$courier,$weight=1000,$origin=null,$service=null){
 		try {
 			$origin=is_null($origin)?config('rajaongkir.origin'):$origin;
-			$headers=['key'=> config('rajaongkir.api_key')];
-			$client=new Client([
-				'base_uri'=>'https://api.rajaongkir.com/starter/',
-				'headers'=>$headers
-			]);
+			$client=$this->getClient();
 			$response=$client->post('cost',[
 				'form_params'=>[
 					'origin'=>$origin,
@@ -86,13 +83,10 @@ class Cost
 			}
 			return collect();
 		} catch (RequestException $e) {
-		    if ($e->hasResponse()) {
-		        echo Psr7\str($e->getResponse());
-		    }
-			
+			$this->getErrors($e);			
 		}
 		catch (Exception $e) {
-			
+			throw $e;
 		}
 	}
 	public function couriers($destination,$couriers,$weight=1000,$origin=null)
@@ -100,12 +94,8 @@ class Cost
 		try {
 			$cList=explode(',', $couriers);
 			$origin=is_null($origin)?config('rajaongkir.origin'):$origin;
-			$headers=['key'=> config('rajaongkir.api_key')];
-			$client=new Client([
-				'base_uri'=>'https://api.rajaongkir.com/starter/',
-				'headers'=>$headers
-			]);
-			$promises=[];
+			$client=$this->getClient();
+			$promises=array();
 			$resultArray=array();
 			foreach ($cList as $courier) {
 				$params=[
@@ -132,13 +122,10 @@ class Cost
 			}
 			return collect($resultArray);
 		} catch (RequestException $e) {
-		    if ($e->hasResponse()) {
-		        echo Psr7\str($e->getResponse());
-		    }
-			
+			$this->getErrors($e);			
 		}
 		catch (Exception $e) {
-			
+			throw $e;
 		}
 	}
 }
