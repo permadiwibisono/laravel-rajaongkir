@@ -122,6 +122,44 @@ Cost::calculate($destination,$courier,$weight,$origin,$service);
 If your key submit is invalid ```InvalidTokenException``` will thrown. 
 And if Bad Request from their server, ```RajaOngkirRequestException``` will thrown.
 
+## Problem 
+* Call undefined function ```Pewe\RajaOngkir\Providers\config_path()```
+  #### To resolve this:
+  Create a file called ```helpers.php``` in the ```app/``` directory. Paste the code inside it.
+  ```php
+  <?php
+   if ( ! function_exists('config_path'))
+   {
+     /**
+      * Get the configuration path.
+      *
+      * @param  string $path
+      * @return string
+      */
+      function config_path($path = '')
+      {
+         return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
+      }
+    }
+  ```
+  Go to ```composer.json``` and add files to autoload so that it looks like this:
+
+  ```json
+   ...
+   "autoload": {
+        "psr-4": {
+        "App\\": "app/"
+      },
+      "files": [
+         "app/helpers.php"
+      ]
+    },
+   ...
+  ```
+  Run ```composer dump-autoload``` to load the newly created helpers file. 
+  Or just following this [gist](https://gist.github.com/mabasic/21d13eab12462e596120).
+
+
 ## Contribute
 
-Show your ❤️ and support by giving a ⭐ or fork. Any suggestions, issues and pull request are welcome !
+Show your :heart: and support by giving a :star2: or fork. Any suggestions, issues and pull request are welcome :beers:!
