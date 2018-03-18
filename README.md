@@ -4,7 +4,7 @@ A wrapper for Raja Ongkir API built for laravel and lumen (only available for *S
 
 ## Installations
 ```
-composer install pewe/laravel-ongkir --save
+composer require pewe/laravel-rajaongkir
 ```
 
 ## Configuration
@@ -14,41 +14,63 @@ RAJAONGKIR_API_KEY=12345667
 ```
 
 ### For Lumen
-* Edit your ```boostrap/app.php```
-Configure your config
-```
-$app->configure('rajaongkir');
-```
+Edit your ```boostrap/app.php```
+
+
 Enable Facades
-```
+```php
 $app->withFacades();
 ```
 Enable class_alias (Optional)
-```
+```php
 class_alias('Pewe\RajaOngkir\Facades\Province', 'Province');
 class_alias('Pewe\RajaOngkir\Facades\City', 'City');
 class_alias('Pewe\RajaOngkir\Facades\Cost', 'Cost');
 ```
-Register RajaOngkirServiceProvider
-```
+Register RajaOngkirServiceProvider (Optional)
+```php
 $app->register(Pewe\RajaOngkir\Providers\RajaOngkirServiceProvider::class);
 ```
-* Copy config file rajaongkir.php to your folder config. Or if You're already install package [laravelista/lumen-vendor-publish](https://github.com/laravelista/lumen-vendor-publish).
- You can use this command:
+Copy config file rajaongkir.php (```vendor/pewe/laravel-rajaongkir/src/config/rajaongkir.php```) to your folder config. Or if You're already install package [laravelista/lumen-vendor-publish](https://github.com/laravelista/lumen-vendor-publish).
+ You must register RajaOngkirServiceProvider before, then use this command:
 ```
 php artisan vendor:publish --tag=laravel-rajaongkir-config
+```
+Configure your config
+```php
+$app->configure('rajaongkir');
 ```
 
 
 ## Usage
 
+### Import
+```php
+<?php
+namespace App\Http\Controllers;
+use App\Http\Controllers\Controller;
+/*...*/
+
+
+use City; //if using class_alias
+//use Pewe\RajaOngkir\Facades\City; //if not using class_alias
+
+class ExampleController extends Controller
+{
+  /*...*/
+  public function getCities(){
+    dd(City::all());
+  }
+}
+```
+
 ### City
 #### Get All City
-```
+```php
 City::all();
 ```
 #### Get City by Id
-```
+```php
 City::find($id);
 ```
 
@@ -59,11 +81,11 @@ City::find($id);
 
 ### Province
 #### Get All Province
-```
+```php
 Province::all();
 ```
 #### Get Province by Id
-```
+```php
 Province::find($id);
 ```
 
@@ -74,7 +96,7 @@ Province::find($id);
 
 ### Available Couriers & Cost
 #### Get Available Couriers
-```
+```php
 Cost::couriers($destination,$weight,$origin);
 ```
 
@@ -85,7 +107,7 @@ Cost::couriers($destination,$weight,$origin);
 | $origin 			| Integer		 | City ID of Origin		| config(rajaongkir.origin) | 146		|
 
 #### Get Cost
-```
+```php
 Cost::calculate($destination,$courier,$weight,$origin,$service);
 ```
 
@@ -99,3 +121,7 @@ Cost::calculate($destination,$courier,$weight,$origin,$service);
 
 If your key submit is invalid ```InvalidTokenException``` will thrown. 
 And if Bad Request from their server, ```RajaOngkirRequestException``` will thrown.
+
+## Contribute
+
+Show your ❤️ and support by giving a ⭐ or fork. Any suggestions, issues and pull request are welcome !
